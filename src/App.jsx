@@ -13,7 +13,7 @@ const COMMITTEES = [
   { name: "Service Project", lead: "Cherrisse Amaro" },
   { name: "Welcome Reception", lead: "Tekea Saunders / Cathy Duffy" },
   { name: "Rise and Radiate Yoga", lead: "Charlane Brown-Wyands" },
-  { name: "Plenaries", lead: "Susan Edwards / Lasean Hardy" },
+  { name: "Plenaries", lead: "Susan Edwards / Lasean Hardy / Nikoji Smith" },
   { name: "Flag Ceremony", lead: "Terri Barnett Coleman" },
   { name: "Workshops", lead: "Alisa Arthur / Michelle Evans" },
   { name: "Jewels Luncheon", lead: "Rashema Ingraham / Misti-Dawn Curry" },
@@ -176,7 +176,7 @@ export default function App() {
     Object.fromEntries(COMMITTEES.map(c => [c.name, {
       status: "Not Started", budgetSubmitted: false, quotesSubmitted: false, onTrack: false,
       risks: "", lastUpdated: "", runOfShowComplete: false, rehearsalNeeded: c.name === "Legacy Parade",
-      avNeeds: "", roomSetupFinalized: false,
+      avNeeds: "", roomSetupFinalized: false, lead: c.lead,
     }]))
   );
 
@@ -385,7 +385,7 @@ export default function App() {
     onTrackCount,
     committees: COMMITTEES.map(c => ({
       name: c.name,
-      lead: c.lead,
+      lead: data[c.name].lead,
       status: data[c.name].status,
       budgetSubmitted: data[c.name].budgetSubmitted,
       quotesSubmitted: data[c.name].quotesSubmitted,
@@ -567,7 +567,7 @@ export default function App() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                     <div>
                       <div style={{ fontWeight: 700, fontSize: 14 }}>{c.name}</div>
-                      <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>{c.lead}</div>
+                      <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>{data[c.name].lead}</div>
                     </div>
                     <StatusBadge status={d.status} />
                   </div>
@@ -581,6 +581,10 @@ export default function App() {
                   {d.risks && <div style={{ marginTop: 8, fontSize: 11, color: "#c0392b", background: "#ffeaea", borderRadius: 6, padding: "4px 8px" }}>⚠ {d.risks}</div>}
                   {selectedCommittee === c.name && (
                     <div onClick={e => e.stopPropagation()} style={{ marginTop: 14, borderTop: "1px solid #fce4f0", paddingTop: 12 }}>
+                      <div style={{ marginBottom: 10 }}>
+                        <label style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", display: "block", marginBottom: 3 }}>Chairman(s) / Lead</label>
+                        <input value={d.lead} onChange={e => updateCommittee(c.name, "lead", e.target.value)} placeholder="Name(s), separated by / " style={inputStyle} />
+                      </div>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
                         <div>
                           <label style={{ fontSize: 10, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", display: "block", marginBottom: 3 }}>Status</label>
@@ -621,7 +625,7 @@ export default function App() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 15px", background: ci % 2 === 0 ? lightPink : "#f9fef9", borderBottom: "1px solid #fce4f0" }}>
                       <div>
                         <span style={{ fontWeight: 700, fontSize: 13 }}>{c.name}</span>
-                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{c.lead}</span>
+                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{data[c.name].lead}</span>
                         <span style={{ fontSize: 11, color: pink, marginLeft: 10, fontWeight: 600 }}>{rows.filter(r => r.name).length} member{rows.filter(r => r.name).length !== 1 ? "s" : ""}</span>
                       </div>
                       {addRowBtn(() => addMember(c.name))}
@@ -666,7 +670,7 @@ export default function App() {
                     return (
                       <tr key={c.name}>
                         <td style={{ ...tdStyle(i), fontWeight: 600, fontSize: 13 }}>{c.name}</td>
-                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{c.lead}</td>
+                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{data[c.name].lead}</td>
                         <td style={tdStyle(i)}><Toggle checked={d.budgetSubmitted} onChange={v => updateCommittee(c.name, "budgetSubmitted", v)} /></td>
                         <td style={tdStyle(i)}><Toggle checked={d.quotesSubmitted} onChange={v => updateCommittee(c.name, "quotesSubmitted", v)} /></td>
                         <td style={tdStyle(i)}><Toggle checked={d.onTrack} onChange={v => updateCommittee(c.name, "onTrack", v)} /></td>
@@ -698,7 +702,7 @@ export default function App() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 15px", background: ci % 2 === 0 ? lightPink : "#f9fef9", borderBottom: "1px solid #fce4f0" }}>
                       <div>
                         <span style={{ fontWeight: 700, fontSize: 13 }}>{c.name}</span>
-                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{c.lead}</span>
+                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{data[c.name].lead}</span>
                       </div>
                       {addRowBtn(() => addSignageRow(c.name))}
                     </div>
@@ -867,7 +871,7 @@ export default function App() {
                     return (
                       <tr key={c.name}>
                         <td style={{ ...tdStyle(i), fontWeight: 600, fontSize: 13 }}>{c.name}</td>
-                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{c.lead}</td>
+                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{data[c.name].lead}</td>
                         <td style={tdStyle(i)}><Toggle checked={d.runOfShowComplete} onChange={v => updateCommittee(c.name, "runOfShowComplete", v)} /></td>
                         <td style={tdStyle(i)}><Toggle checked={d.rehearsalNeeded} onChange={v => updateCommittee(c.name, "rehearsalNeeded", v)} /></td>
                         <td style={tdStyle(i)}><input type="date" style={{ ...inputStyle, width: 130 }} /></td>
@@ -963,7 +967,7 @@ export default function App() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 15px", background: ci % 2 === 0 ? lightPink : "#f9fef9", borderBottom: "1px solid #fce4f0" }}>
                       <div>
                         <span style={{ fontWeight: 700, fontSize: 13 }}>{c.name}</span>
-                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{c.lead}</span>
+                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{data[c.name].lead}</span>
                         <span style={{ fontSize: 11, color: arrivedCount === rows.length && rows[0].deliverable ? "#15803d" : pink, marginLeft: 10, fontWeight: 600 }}>
                           {arrivedCount}/{rows.length} arrived
                         </span>
@@ -1013,7 +1017,7 @@ export default function App() {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 15px", background: ci % 2 === 0 ? lightPink : "#f9fef9", borderBottom: "1px solid #fce4f0" }}>
                       <div>
                         <span style={{ fontWeight: 700, fontSize: 13 }}>{c.name}</span>
-                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{c.lead}</span>
+                        <span style={{ fontSize: 11, color: "#6b7280", marginLeft: 10 }}>{data[c.name].lead}</span>
                         <span style={{ fontSize: 11, color: rows.filter(r => r.decision).length > 0 ? "#b45309" : "#9ca3af", marginLeft: 10, fontWeight: 600 }}>
                           {rows.filter(r => r.decision).length} item{rows.filter(r => r.decision).length !== 1 ? "s" : ""}
                         </span>
@@ -1162,7 +1166,7 @@ export default function App() {
               <div style={{ background: "#fff0f5", border: "1px solid #fecaca", borderRadius: 12, padding: "10px 16px", marginBottom: 20 }}>
                 {committeesAtRisk.map(c => (
                   <div key={c.name} style={{ fontSize: 12.5, padding: "4px 0", color: "#ad1457" }}>
-                    <b>{c.name}</b> — {c.lead}
+                    <b>{c.name}</b> — {data[c.name].lead}
                   </div>
                 ))}
               </div>
@@ -1194,7 +1198,7 @@ export default function App() {
                     {committeesMissingBudget.map((c, i) => (
                       <tr key={c.name}>
                         <td style={{ ...tdStyle(i), fontWeight: 600, fontSize: 12.5 }}>{c.name}</td>
-                        <td style={{ ...tdStyle(i), fontSize: 11.5, color: "#6b7280" }}>{c.lead}</td>
+                        <td style={{ ...tdStyle(i), fontSize: 11.5, color: "#6b7280" }}>{data[c.name].lead}</td>
                         <td style={tdStyle(i)}><StatusBadge status={data[c.name].status} /></td>
                       </tr>
                     ))}
@@ -1214,7 +1218,7 @@ export default function App() {
                     return (
                       <tr key={c.name}>
                         <td style={{ ...tdStyle(i), fontWeight: 600, fontSize: 12 }}>{c.name}</td>
-                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{c.lead}</td>
+                        <td style={{ ...tdStyle(i), fontSize: 11, color: "#6b7280" }}>{data[c.name].lead}</td>
                         <td style={tdStyle(i)}><StatusBadge status={d.status} /></td>
                         <td style={{ ...tdStyle(i), fontSize: 12 }}>{d.budgetSubmitted ? "✓" : "—"}</td>
                         <td style={{ ...tdStyle(i), fontSize: 12 }}>{d.quotesSubmitted ? "✓" : "—"}</td>
