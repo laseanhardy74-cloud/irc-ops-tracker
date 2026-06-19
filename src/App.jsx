@@ -268,7 +268,19 @@ export default function App() {
 
   const applySnapshot = (saved) => {
     isApplyingRemoteUpdate.current = true;
-    if (saved.data) setData(saved.data);
+    if (saved.data) {
+      // Snapshots saved before the "Chairman(s) / Lead" field existed won't have
+      // a `lead` value for any committee. Rather than show those blank, fall back
+      // to the original seeded name so nobody's chairman list appears to vanish.
+      const backfilled = Object.fromEntries(
+        COMMITTEES.map(c => {
+          const savedEntry = saved.data[c.name] || {};
+          const hasLead = typeof savedEntry.lead === "string" && savedEntry.lead.trim() !== "";
+          return [c.name, { ...savedEntry, lead: hasLead ? savedEntry.lead : c.lead }];
+        })
+      );
+      setData(backfilled);
+    }
     if (saved.members) setMembers(saved.members);
     if (saved.signageRows) setSignageRows(saved.signageRows);
     if (saved.deliverables) setDeliverables(saved.deliverables);
