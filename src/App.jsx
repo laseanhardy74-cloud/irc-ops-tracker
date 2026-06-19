@@ -152,9 +152,15 @@ function StatusBadge({ status }) {
 
 function Toggle({ checked, onChange }) {
   return (
-    <div onClick={() => onChange(!checked)} style={{ cursor: "pointer", width: 40, height: 22, borderRadius: 11, background: checked ? "#E91E8C" : "#d1d5db", position: "relative", transition: "background 0.2s", flexShrink: 0 }}>
-      <div style={{ position: "absolute", top: 3, left: checked ? 20 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
-    </div>
+    <span
+      onClick={() => onChange(!checked)}
+      className="toggle-tap-area"
+      style={{ cursor: "pointer", display: "inline-flex", alignItems: "center", flexShrink: 0 }}
+    >
+      <span style={{ width: 40, height: 22, borderRadius: 11, background: checked ? "#E91E8C" : "#d1d5db", position: "relative", transition: "background 0.2s", display: "inline-block", flexShrink: 0 }}>
+        <span style={{ position: "absolute", top: 3, left: checked ? 20 : 3, width: 16, height: 16, borderRadius: "50%", background: "#fff", transition: "left 0.2s", boxShadow: "0 1px 3px rgba(0,0,0,0.2)", display: "block" }} />
+      </span>
+    </span>
   );
 }
 
@@ -497,11 +503,11 @@ export default function App() {
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", minHeight: "100vh", background: "#fff5fb", color: "#003d1e" }}>
 
       {/* ── HEADER ── */}
-      <div className="no-print" style={{ background: "linear-gradient(135deg, #E91E8C 0%, #C2185B 55%, #004B23 100%)", padding: "28px 32px 0", color: "#fff" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16, alignItems: "flex-start" }}>
+      <div className="no-print app-header" style={{ background: "linear-gradient(135deg, #E91E8C 0%, #C2185B 55%, #004B23 100%)", padding: "28px 32px 0", color: "#fff" }}>
+        <div className="header-top-row" style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16, alignItems: "flex-start" }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", color: "#f8a8d0", textTransform: "uppercase", marginBottom: 4 }}>35th IRC · Master Operations</div>
-            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>Operations Command Center</h1>
+            <h1 className="header-title" style={{ margin: 0, fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>Operations Command Center</h1>
             <p style={{ margin: "4px 0 0", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{totalCommittees} Committees · Steering-Committee Tracker</p>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8, fontSize: 11, color: "rgba(255,255,255,0.75)", background: "rgba(255,255,255,0.1)", borderRadius: 20, padding: "4px 10px" }}>
               <span style={{
@@ -515,17 +521,17 @@ export default function App() {
               {syncStatus === "idle" && (lastSyncedAt ? `Last synced ${lastSyncedAt.toLocaleString()}` : "Shared data — not yet saved")}
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-end" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.1)", borderRadius: 14, padding: "10px 16px", border: "1px solid rgba(255,255,255,0.2)" }}>
+          <div className="header-right-col" style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-end" }}>
+            <div className="director-card" style={{ display: "flex", alignItems: "center", gap: 14, background: "rgba(255,255,255,0.1)", borderRadius: 14, padding: "10px 16px", border: "1px solid rgba(255,255,255,0.2)" }}>
               <img src={MRD_PHOTO} alt="Carrie J. Clark" style={{ width: 48, height: 48, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.35)", objectFit: "cover", flexShrink: 0, display: "block" }} />
               <div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "0.08em", textTransform: "uppercase" }}>International Regional Director</div>
                 <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.3px" }}>Carrie J. Clark</div>
               </div>
             </div>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <div className="stat-pill-row" style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "flex-end" }}>
               {[{ label: "Completed", val: completedCount, color: "#86efac" }, { label: "In Progress", val: inProgressCount, color: "#fde68a" }, { label: "At Risk", val: atRiskCount, color: "#f48cb8" }, { label: "On Track", val: onTrackCount, color: "#bbf7d0" }].map(s => (
-                <div key={s.label} style={{ background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "10px 18px", textAlign: "center", border: "1px solid rgba(255,255,255,0.15)" }}>
+                <div key={s.label} className="stat-pill" style={{ background: "rgba(255,255,255,0.1)", borderRadius: 12, padding: "10px 18px", textAlign: "center", border: "1px solid rgba(255,255,255,0.15)" }}>
                   <div style={{ fontSize: 22, fontWeight: 800, color: s.color }}>{s.val}</div>
                   <div style={{ fontSize: 11, color: "rgba(255,255,255,0.65)", marginTop: 1 }}>{s.label}</div>
                 </div>
@@ -539,16 +545,16 @@ export default function App() {
           </div>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginTop: 4, marginBottom: 16 }}>{Math.round((completedCount / totalCommittees) * 100)}% of committees completed</div>
         </div>
-        <div style={{ display: "flex", gap: 2, overflowX: "auto" }}>
+        <div className="tab-row" style={{ display: "flex", gap: 2, overflowX: "auto" }}>
           {TABS.map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{ background: tab === t ? "#fff" : "transparent", color: tab === t ? "#E91E8C" : "rgba(255,255,255,0.65)", border: "none", padding: "10px 15px", borderRadius: "8px 8px 0 0", cursor: "pointer", fontSize: 12, fontWeight: tab === t ? 700 : 500, whiteSpace: "nowrap" }}>
+            <button key={t} onClick={() => setTab(t)} className="tab-button" style={{ background: tab === t ? "#fff" : "transparent", color: tab === t ? "#E91E8C" : "rgba(255,255,255,0.65)", border: "none", padding: "10px 15px", borderRadius: "8px 8px 0 0", cursor: "pointer", fontSize: 12, fontWeight: tab === t ? 700 : 500, whiteSpace: "nowrap" }}>
               {t}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ padding: "24px 28px", maxWidth: 1200, margin: "0 auto" }} className={tab === "📋 Executive Summary" ? "print-area" : ""}>
+      <div className={`main-content ${tab === "📋 Executive Summary" ? "print-area" : ""}`} style={{ padding: "24px 28px", maxWidth: 1200, margin: "0 auto" }}>
 
         {/* ── DASHBOARD ── */}
         {tab === "Dashboard" && (
@@ -651,7 +657,7 @@ export default function App() {
               <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Budget & Procurement</h2>
               <span style={{ fontSize: 12, color: "#6b7280", background: "#fff", padding: "5px 14px", borderRadius: 20, border: "1px solid #fce4f0" }}>{budgetCount} / {totalCommittees} budgets submitted</span>
             </div>
-            <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
+            <div className="scroll-wrap" style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead><tr>{["Committee", "Lead", "Budget Submitted", "Quotes In", "Approved by MRD", "Payment Status", "Notes"].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
                 <tbody>
@@ -696,7 +702,7 @@ export default function App() {
                       </div>
                       {addRowBtn(() => addSignageRow(c.name))}
                     </div>
-                    <div style={{ overflowX: "auto" }}>
+                    <div className="scroll-wrap" style={{ overflowX: "auto" }}>
                       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 820 }}>
                         <thead>
                           <tr>{["#", "Signage Item", "Qty", "Venue Location", "Sign Dimensions", "Quoted", "Approved", "Ordered", "Shipped", "Delivered", "Installed", ""].map(h => (
@@ -852,7 +858,7 @@ export default function App() {
         {tab === "Logistics" && (
           <div>
             <h2 style={{ margin: "0 0 18px", fontSize: 20, fontWeight: 700 }}>Logistics & Run of Show</h2>
-            <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
+            <div className="scroll-wrap" style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 800 }}>
                 <thead><tr>{["Event / Committee", "Lead", "RoS Complete", "Rehearsal Needed", "Rehearsal Date", "AV Needs", "Room Setup ✓", "Notes"].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
                 <tbody>
@@ -906,7 +912,7 @@ export default function App() {
                       {addRowBtn(() => addTimelineEntry(dayIdx))}
                     </div>
                   </div>
-                  <div style={{ overflowX: "auto" }}>
+                  <div className="scroll-wrap" style={{ overflowX: "auto" }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 980 }}>
                       <thead>
                         <tr>{["#", "Event / Activity", "Type", "Start", "End", "Location", "Owner", "Notes", ""].map(h => (
@@ -964,7 +970,7 @@ export default function App() {
                       </div>
                       {addRowBtn(() => addDeliverable(c.name))}
                     </div>
-                    <div style={{ overflowX: "auto" }}>
+                    <div className="scroll-wrap" style={{ overflowX: "auto" }}>
                       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 760 }}>
                         <thead>
                           <tr>{["#", "Item", "Due Date", "Owner", "Approved", "Ordered", "Arrived", "Notes", ""].map(h => (
@@ -1014,7 +1020,7 @@ export default function App() {
                       </div>
                       {addRowBtn(() => addRisk(c.name))}
                     </div>
-                    <div style={{ overflowX: "auto" }}>
+                    <div className="scroll-wrap" style={{ overflowX: "auto" }}>
                       <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 760 }}>
                         <thead>
                           <tr>{["#", "Date", "Decision Needed", "Decision Made", "Approved By", "Notes", ""].map(h => (
@@ -1053,7 +1059,7 @@ export default function App() {
               </div>
               <button onClick={addTraveler} style={{ padding: "8px 18px", borderRadius: 20, border: "1px solid #004B23", background: "#fff", color: "#004B23", cursor: "pointer", fontWeight: 700, fontSize: 13 }}>+ Add Traveler</button>
             </div>
-            <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
+            <div className="scroll-wrap" style={{ background: "#fff", borderRadius: 14, border: "1px solid #fce4f0", overflow: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 900 }}>
                 <thead>
                   <tr>{["#", "Soror Name", "Committee", "Arrival", "Departure", "Hotel", "Support Needed", "Notes", ""].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr>
@@ -1199,7 +1205,7 @@ export default function App() {
 
             {/* Full committee table */}
             <h2 style={{ fontSize: 15, fontWeight: 700, color: green, marginBottom: 8 }}>Full Committee Status</h2>
-            <div style={{ border: "1px solid #fce4f0", borderRadius: 12, overflow: "auto", marginBottom: 20 }}>
+            <div className="scroll-wrap" style={{ border: "1px solid #fce4f0", borderRadius: 12, overflow: "auto", marginBottom: 20 }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead><tr>{["Committee", "Lead", "Status", "Budget", "Quotes", "On Track", "Members", "Signage", "Shipping"].map(h => <th key={h} style={thStyle}>{h}</th>)}</tr></thead>
                 <tbody>
@@ -1281,6 +1287,52 @@ export default function App() {
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #fff0f8; }
         ::-webkit-scrollbar-thumb { background: #f06292; border-radius: 3px; }
+
+        /* ── MOBILE RESPONSIVENESS ──────────────────────────────────── */
+        /* Smooth, native-feeling scrolling on iOS for every scrollable area */
+        .scroll-wrap, .tab-row { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+
+        /* Bigger, easier-to-tap toggle switches and checkboxes on touch screens,
+           using padding to grow the tap target without changing the visual size. */
+        @media (pointer: coarse) {
+          input[type="checkbox"] { width: 20px !important; height: 20px !important; }
+          .toggle-tap-area { padding: 11px; margin: -11px; }
+        }
+
+        @media (max-width: 720px) {
+          .app-header { padding: 18px 14px 0 !important; }
+          .header-title { font-size: 20px !important; }
+          .header-top-row { gap: 14px !important; }
+
+          /* Stack the director card and stat pills under the title instead of
+             pinning them to the right, which gets cramped on a narrow screen. */
+          .header-right-col { align-items: flex-start !important; width: 100%; }
+          .director-card { width: 100%; box-sizing: border-box; }
+          .stat-pill-row { width: 100%; justify-content: flex-start !important; }
+          .stat-pill { flex: 1 1 calc(50% - 5px); min-width: 0 !important; padding: 8px 10px !important; }
+
+          .tab-button { padding: 9px 11px !important; font-size: 11.5px !important; }
+
+          .main-content { padding: 14px 12px !important; }
+
+          /* Give every horizontally-scrolling table a soft right-edge shadow as a
+             visual cue that there's more content to scroll to, since phones don't
+             show a visible scrollbar by default the way desktop browsers do. */
+          .scroll-wrap {
+            position: relative;
+            background-image: linear-gradient(to right, transparent, transparent),
+              linear-gradient(to right, rgba(0,0,0,0.06), transparent 12px);
+            background-position: 0 0, 100% 0;
+            background-repeat: no-repeat;
+            background-size: 100% 100%, 14px 100%;
+            background-attachment: local, scroll;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .header-title { font-size: 18px !important; }
+          .stat-pill { flex: 1 1 100%; }
+        }
         @media print {
           .no-print { display: none !important; }
           body { background: #fff !important; }
